@@ -17,4 +17,76 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Model">
+      <UniqueIdentifier>{7a6c3f2c-1e63-4d34-9a3c-4f0b6a0b1a01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View">
+      <UniqueIdentifier>{7a6c3f2c-1e63-4d34-9a3c-4f0b6a0b1a02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controller">
+      <UniqueIdentifier>{7a6c3f2c-1e63-4d34-9a3c-4f0b6a0b1a03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{7a6c3f2c-1e63-4d34-9a3c-4f0b6a0b1a04}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\SanityTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Model\IEntity.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\IModel.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\StatefulModel.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\QuantityGuard.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\FifoQueue.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="View\HeaderView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\MenuView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\TableView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\BadgeView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\ConfirmView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\ProgressBarView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\MessageView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\IController.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\MenuNode.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\NavigationLoop.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\InputReader.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

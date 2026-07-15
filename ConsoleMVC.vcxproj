@@ -25,6 +25,22 @@
     <RootNamespace>ConsoleMVC</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
+  <!--
+    ConsoleMVCRunTests switches the single entry point in main.cpp between the
+    console demo and the gtest runner (see main.cpp / Tests/SanityTest.cpp).
+    Default is 0 (console demo). Build the test runner with:
+      msbuild ConsoleMVC.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:ConsoleMVCRunTests=1
+  -->
+  <PropertyGroup>
+    <ConsoleMVCRunTests Condition="'$(ConsoleMVCRunTests)'==''">0</ConsoleMVCRunTests>
+    <!--
+      main.cpp already supplies the single entry point for both build modes
+      (console demo vs. gtest runner). The googletest NuGet package would
+      otherwise also link gtest_main.lib, which defines its own main() and
+      collides with ours (LNK2005/LNK1169). Disable that library.
+    -->
+    <Microsoft-GoogleTest-Disable-gtest_main Condition="'$(Microsoft-GoogleTest-Disable-gtest_main)'==''">true</Microsoft-GoogleTest-Disable-gtest_main>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -74,9 +90,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;CONSOLEMVC_RUN_TESTS=$(ConsoleMVCRunTests);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -92,9 +110,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;CONSOLEMVC_RUN_TESTS=$(ConsoleMVCRunTests);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -108,9 +128,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;CONSOLEMVC_RUN_TESTS=$(ConsoleMVCRunTests);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -126,9 +148,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;CONSOLEMVC_RUN_TESTS=$(ConsoleMVCRunTests);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,16 +163,38 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Tests\SanityTest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Model\IEntity.h" />
+    <ClInclude Include="Model\IModel.h" />
+    <ClInclude Include="Model\StatefulModel.h" />
+    <ClInclude Include="Model\QuantityGuard.h" />
+    <ClInclude Include="Model\FifoQueue.h" />
+    <ClInclude Include="View\HeaderView.h" />
+    <ClInclude Include="View\MenuView.h" />
+    <ClInclude Include="View\TableView.h" />
+    <ClInclude Include="View\BadgeView.h" />
+    <ClInclude Include="View\ConfirmView.h" />
+    <ClInclude Include="View\ProgressBarView.h" />
+    <ClInclude Include="View\MessageView.h" />
+    <ClInclude Include="Controller\IController.h" />
+    <ClInclude Include="Controller\MenuNode.h" />
+    <ClInclude Include="Controller\NavigationLoop.h" />
+    <ClInclude Include="Controller\InputReader.h" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="packages\gtest.1.7.0\build\native\gtest.targets" Condition="Exists('packages\gtest.1.7.0\build\native\gtest.targets')" />
+    <Import Project="packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.8\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets" Condition="Exists('packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.8\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>이 프로젝트는 이 컴퓨터에 없는 NuGet 패키지를 참조합니다. 해당 패키지를 다운로드하려면 NuGet 패키지 복원을 사용하십시오. 자세한 내용은 http://go.microsoft.com/fwlink/?LinkID=322105를 참조하십시오. 누락된 파일은 {0}입니다.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\gtest.1.7.0\build\native\gtest.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\gtest.1.7.0\build\native\gtest.targets'))" />
+    <Error Condition="!Exists('packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.8\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.8\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets'))" />
   </Target>
 </Project>
