@@ -7,6 +7,7 @@
 - **파일로 구성된 Model / Controller / View 패키지 구조와 역할 분리를 완성**한다. 즉, 디렉터리/네임스페이스가 계층별로 분리되어 있고, 각 계층이 자신의 책임(`docs/feature/model.md`, `docs/feature/view.md`, `docs/feature/controller.md`)만 수행하는 실행 가능한 코드가 있어야 한다.
 - **데이터 저장 방식은 자유**다 — 파일로 저장해도 되고, 프로그램 메모리에만 존재해도 된다. `DataPersistence` 저장소 수준의 영속성(재시작 후 복구 등)을 이 저장소에서 완성할 필요는 없다.
 - 단, **나중에 별도의 데이터 모니터링 모듈(`DataMonitor`)을 붙일 수 있도록 확장성을 열어둔다.** 이는 지금 모니터링 기능을 구현하라는 뜻이 아니라, Model 계층이 외부 관찰자에게 상태를 노출할 수 있는 지점(변경 알림, 읽기 전용 조회 인터페이스, 영속성 어댑터 주입 지점)을 설계 단계에서 마련해 두라는 뜻이다.
+- **PoC 컨셉 강화**: 코어 계층(`Model/`, `View/`, `Controller/`)은 계속 도메인 무관하게 유지하되, 각 Phase에서 그 계층이 만든 범용 계약이 실제로 동작하는지 눈으로 확인할 수 있도록 `Example/`(`ConsoleMVC::Example` 네임스페이스)에 `../ref/requirements.pdf` 기반의 예시 도메인(시료/주문/생산)을 함께 쌓는다. `Example/`의 데이터는 메모리에만 존재하며 영속성을 갖지 않는다(`../CLAUDE.md`의 "PoC 검증용 예시 도메인" 절 참고). 단, 이미 구현/리뷰/테스트가 끝난 Phase 0/Phase 1 코어 산출물은 재작업하지 않고, 그 위에 `Example/` 계층을 추가로 쌓아 나간다.
 
 ## 2. 참고 문서
 
@@ -30,10 +31,10 @@
 | Phase | 문서 | 목표 |
 |---|---|---|
 | Phase 0 | `docs/design/phase0.md` | 프로젝트 골격 준비 — 디렉터리 구조, 빌드 등록, 네임스페이스/네이밍 컨벤션 확정 |
-| Phase 1 | `docs/design/phase1.md` | Model 계층 구현 — 엔티티/컬렉션 계약 + 확장성 훅(Observer, 스냅샷, 영속성 어댑터 주입 지점) |
-| Phase 2 | `docs/design/phase2.md` | View 계층 구현 — 콘솔 렌더링 컴포넌트 (입출력 미결합) |
-| Phase 3 | `docs/design/phase3.md` | Controller 계층 구현 — 메뉴 트리, 내비게이션 루프, 입력/예외 처리 규칙 |
-| Phase 4 | `docs/design/phase4.md` | 통합 데모 및 확장성 검증 — Model/View/Controller 와이어링, 모니터링 확장 지점 시연, 최종 리뷰/테스트 |
+| Phase 1 | `docs/design/phase1.md` | Model 계층 구현 — 엔티티/컬렉션 계약 + 확장성 훅(Observer, 스냅샷, 영속성 어댑터 주입 지점). 해당 계층의 예시 도메인(시료/주문/생산 Model, `Example/Model/`) 검증 포함 |
+| Phase 2 | `docs/design/phase2.md` | View 계층 구현 — 콘솔 렌더링 컴포넌트 (입출력 미결합). 해당 계층의 예시 도메인 화면(`Example/View/`) 검증 포함 |
+| Phase 3 | `docs/design/phase3.md` | Controller 계층 구현 — 메뉴 트리, 내비게이션 루프, 입력/예외 처리 규칙. 해당 계층의 예시 메뉴 트리(`Example/Controller/`) 검증 포함 |
+| Phase 4 | `docs/design/phase4.md` | 통합 데모 및 확장성 검증 — Model/View/Controller 와이어링, 모니터링 확장 지점 시연, 예시 도메인 전체 통합 데모, 최종 리뷰/테스트 |
 
 각 Phase는 아래 순서로 진행한다 (에이전트 팀 워크플로):
 

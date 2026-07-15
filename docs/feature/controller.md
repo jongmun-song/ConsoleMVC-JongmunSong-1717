@@ -57,3 +57,21 @@ Controller/
   NavigationLoop.h
   InputReader.h
 ```
+
+## 7. PoC 검증용 예시 메뉴 트리 (`Example/Controller/`)
+
+`../CLAUDE.md`의 "PoC 검증용 예시 도메인" 절에서 설명한 예시 도메인(시료/주문/생산)을 실제로 조작하는 메뉴 트리는 `Example/Controller/`에 구현하며, 위 §2에서 정의한 `IController`/`MenuNode`/`NavigationLoop`/`InputReader`를 그대로 사용한다(코어를 수정하지 않는다).
+
+예시 메뉴 트리(참고용, 고정 사양 아님):
+
+```
+메인 메뉴
+ ├─ 시료 관리 (시료 등록/조회)
+ ├─ 시료 주문 (주문 접수)
+ ├─ 주문 승인/거절
+ ├─ 모니터링 (조회 전용)
+ ├─ 생산 라인 현황
+ └─ 출고 처리
+```
+
+이 트리는 `Example/Model/`(model.md §6)과 `Example/View/`(view.md §7)를 연결하여, 코어의 `NavigationLoop`가 임의 깊이 중첩 메뉴와 상태 변경 액션(확인 프롬프트 포함)을 실제 도메인 형태로도 지원함을 보여주는 참고/데모 구현이다. `SampleOrderSystem`이 이 메뉴 트리를 그대로 재사용해야 하는 것은 아니며, 자신만의 메뉴 구조를 별도로 정의할 수 있다.

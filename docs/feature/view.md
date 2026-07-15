@@ -73,3 +73,20 @@ View/
   ProgressBarView.h
   MessageView.h
 ```
+
+## 7. PoC 검증용 예시 도메인 화면 (`Example/View/`)
+
+`../CLAUDE.md`의 "PoC 검증용 예시 도메인" 절 및 `model.md` §6에서 설명한 예시 도메인(시료/주문/생산)에 대응하는 화면들은 `Example/View/`에 구현하며, 위 §3에서 정의한 범용 View 컴포넌트(`TableView`, `MenuView`, `ConfirmView`, `BadgeView`, `ProgressBarView`, `HeaderView`, `MessageView`)를 조합해서 만든다.
+
+예시 화면(참고용, 고정 사양 아님):
+
+| 예시 화면 | 조합하는 컴포넌트 |
+|---|---|
+| 시료 목록/등록 | `TableView`(시료 목록) + `ConfirmView`(등록 확인) |
+| 주문 접수 | `MenuView`(시료 선택) + `ConfirmView`(주문 요약 확인) |
+| 주문 승인/거절 | `TableView`(대기 주문 목록) + `ConfirmView`(승인/거절 확인) + `BadgeView`(주문 상태 표시) |
+| 모니터링 | `HeaderView`(타임스탬프) + `TableView`(현재 상태 스냅샷) + `BadgeView`(상태 배지) |
+| 생산라인 현황 | `TableView`(생산 큐) + `ProgressBarView`(진행률) + `BadgeView`(생산 상태) |
+| 출고 처리 | `ConfirmView`(출고 확인) + `MessageView`(처리 완료 메시지) |
+
+`Example/View/`는 `Example/Model/`의 예시 도메인 타입을 인자로 받아 위 컴포넌트에 전달하는 얇은 어댑터/포매팅 함수로 구성되며, `View/`의 범용 컴포넌트 자체는 수정하지 않는다. 화면 레이아웃은 `../ref/requirements.pdf`의 예시가 강제 사항이 아니므로 이 예시 도메인 화면 역시 자유롭게 구성할 수 있다. `SampleOrderSystem`이 이 구현을 그대로 재사용해야 하는 것은 아니다.

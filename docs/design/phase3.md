@@ -21,12 +21,14 @@
    - Model이 거부한 상태 전이 → 실패 메시지 + 메뉴 복귀 (크래시 금지)
    - 예기치 않은 런타임 예외 → 최상위에서 포착, 메인 메뉴로 복귀
 5. **최소 데모 메뉴 트리**: 도메인 데이터 없이(또는 더미 Entity 1~2개 정도로) 2단계 이상 중첩된 메뉴(예: 메인 메뉴 → 서브메뉴 → 목록 조회/뒤로가기)가 실제로 동작하는 것을 보여주는 예제. 이 예제는 어디까지나 Controller 구조를 검증하기 위한 것이며, Phase 4에서 Model/View와 함께 더 완성된 형태로 통합된다.
+6. **PoC 예시 메뉴 트리 검증**: `Example/Controller/`에 예시 메뉴 트리(메인 메뉴 → 시료 관리/시료 주문/주문 승인·거절/모니터링/생산라인/출고 처리)를 `IController`/`MenuNode`/`NavigationLoop`로 구현하여, `Example/Model/`(Phase 1)과 `Example/View/`(Phase 2)를 실제로 연결한다(`../feature/controller.md` §7 참고). 코어(`Controller/`)는 수정하지 않는다.
 
 ## 완료 기준
 
 - `Controller/` 디렉터리에 위 구성요소가 구현되어 있고 컴파일된다.
 - 2단계 이상 중첩 메뉴가 실제로 콘솔에서 동작한다(수동 실행 또는 테스트로 확인).
 - `docs/feature/controller.md` 4절의 6가지 예외 상황이 모두 재현 가능하고, 프로그램이 비정상 종료되지 않는다.
+- (6번 항목) `Example/Controller/`의 예시 메뉴 트리가 `Example/Model/`, `Example/View/`를 연결하여 실제로 동작한다.
 
 ## 리뷰 포인트 (code-reviewer)
 
@@ -39,8 +41,9 @@
 - `docs/feature/controller.md` 4절의 예외 케이스 표를 그대로 gtest 케이스로 변환하여 커버
 - 메뉴 전이(하위 진입/상위 복귀/종료) 상태 기계가 올바르게 동작하는지
 - 확인 취소 시 부작용 없음(Model 상태 불변) 검증
+- (6번 항목) `Example/Controller/`의 예시 메뉴 트리에서 주문 승인/거절 등 상태 변경 액션 취소 시 `Example/Model/` 상태가 불변인지
 
 ## Out of scope
 
-- 실제 도메인 메뉴(시료 관리, 주문 등) 전체 구현 — `SampleOrderSystem`의 몫
+- `SampleOrderSystem`이 실제로 소비할 완성된 도메인 메뉴 애플리케이션 — `Example/Controller/`의 예시 메뉴 트리(6번 항목)는 검증용 데모일 뿐, `SampleOrderSystem`이 그대로 재사용해야 하는 것은 아니다
 - 모니터링 확장 지점 자체 구현(이미 Phase 1에서 완료) — 이 Phase에서는 Controller가 그 지점을 침범하지 않는지만 확인

@@ -19,12 +19,14 @@
 - 잘못된 입력, 취소, 종료 등 컨트롤러 레벨의 공통 예외/흐름 처리 규칙
 
 ### 제외 (Out of Scope)
-- 시료(Sample), 주문(Order), 생산 라인(ProductionLine) 등 S-Semi 도메인 모델과 그 상태 전이(RESERVED/CONFIRMED/PRODUCING/RELEASE/REJECTED)
-- 데이터 영속성 구현(`DataPersistence` 저장소 담당)
+- **코어 계층**(`Model/`, `View/`, `Controller/`)에서 시료(Sample), 주문(Order), 생산 라인(ProductionLine) 등 S-Semi 도메인 모델과 그 상태 전이(RESERVED/CONFIRMED/PRODUCING/RELEASE/REJECTED)를 하드코딩하는 것
+- 데이터 영속성 구현(`DataPersistence` 저장소 담당) — `Example/`을 포함해 이 저장소 전체에서 파일/DB 저장을 구현하지 않는다
 - 실시간 데이터 모니터링 도구(`DataMonitor` 저장소 담당)
 - 더미 데이터 생성(`DummyDataGenerator` 저장소 담당)
 
-도메인 예시(시료 관리, 주문 승인/거절, 모니터링, 출고 처리, 생산 라인 등)는 `SampleOrderSystem`이 이 모듈 위에 실제로 구현할 화면들이며, 본 저장소에서는 "이런 형태의 화면/흐름을 일반화된 방식으로 지원할 수 있는가"를 검증하기 위한 참고 사례로만 사용한다.
+단, 위 도메인 모델은 코어 계층에서만 제외 대상이다. `Example/` 디렉터리 아래에는 코어 계약이 실제 도메인 형태를 지원하는지 검증하기 위한 **PoC 검증용 예시 도메인**(시료/주문/생산)을 포함한다(`../CLAUDE.md`의 "PoC 검증용 예시 도메인" 절 참고). 이 예시 도메인은 메모리에만 존재하며 영속성을 갖지 않는다.
+
+도메인 예시(시료 관리, 주문 승인/거절, 모니터링, 출고 처리, 생산 라인 등)는 궁극적으로 `SampleOrderSystem`이 이 모듈 위에 실제로 구현할 화면들이며, 본 저장소의 `Example/`은 "이런 형태의 화면/흐름을 일반화된 방식으로 지원할 수 있는가"를 검증하기 위한 참고 사례로 사용한다. `SampleOrderSystem`이 `Example/`의 구현을 그대로 재사용해야 하는 것은 아니다.
 
 ## 4. 대상 소비자(Consumers)
 
@@ -53,6 +55,7 @@
 - View 계층 설계 문서: `docs/feature/view.md`
 - Controller 계층 설계 문서: `docs/feature/controller.md`
 - MVC 스켈레톤 소스 코드 (Model/View/Controller 디렉터리 구조 및 예제 와이어링)
+- `Example/` 디렉터리 — PoC 검증용 예시 도메인(시료/주문/생산) 구현 및 각 계층 계약을 실제로 사용하는 검증 데모(영속성 없음, 메모리 전용)
 
 ## 8. 완료 기준 (Definition of Done)
 
@@ -60,3 +63,4 @@
 - 최소 2단계 이상 중첩된 메뉴 내비게이션이 동작하는 예제 포함
 - 잘못된 입력에 대한 재입력 유도, 뒤로가기, 종료 처리가 일관된 규칙으로 구현됨
 - 다른 프로젝트(`SampleOrderSystem`)가 도메인 모델만 추가하면 즉시 사용할 수 있는 수준의 일반화
+- `Example/`의 예시 도메인(시료/주문/생산)이 각 계층(Model/View/Controller)의 범용 계약을 실제로 상속/조합하여 동작함을 보여준다(코어 수정 없이)
