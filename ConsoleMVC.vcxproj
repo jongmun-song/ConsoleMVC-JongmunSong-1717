@@ -165,10 +165,17 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Tests\SanityTest.cpp" />
+    <ClCompile Include="Tests\InMemoryModelTest.cpp" />
+    <ClCompile Include="Tests\StatefulModelTest.cpp" />
+    <ClCompile Include="Tests\QuantityGuardTest.cpp" />
+    <ClCompile Include="Tests\FifoQueueTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model\IEntity.h" />
     <ClInclude Include="Model\IModel.h" />
+    <ClInclude Include="Model\IModelObserver.h" />
+    <ClInclude Include="Model\IPersistenceAdapter.h" />
+    <ClInclude Include="Model\InMemoryModel.h" />
     <ClInclude Include="Model\StatefulModel.h" />
     <ClInclude Include="Model\QuantityGuard.h" />
     <ClInclude Include="Model\FifoQueue.h" />

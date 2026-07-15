@@ -38,12 +38,33 @@
     <ClCompile Include="Tests\SanityTest.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="Tests\InMemoryModelTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\StatefulModelTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\QuantityGuardTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\FifoQueueTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model\IEntity.h">
       <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="Model\IModel.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\IModelObserver.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\IPersistenceAdapter.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\InMemoryModel.h">
       <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="Model\StatefulModel.h">
