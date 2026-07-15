@@ -30,6 +30,15 @@
     <Filter Include="Tests">
       <UniqueIdentifier>{7a6c3f2c-1e63-4d34-9a3c-4f0b6a0b1a04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Example">
+      <UniqueIdentifier>{7a6c3f2c-1e63-4d34-9a3c-4f0b6a0b1a05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Example\Model">
+      <UniqueIdentifier>{7a6c3f2c-1e63-4d34-9a3c-4f0b6a0b1a06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Example">
+      <UniqueIdentifier>{7a6c3f2c-1e63-4d34-9a3c-4f0b6a0b1a07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -49,6 +58,15 @@
     </ClCompile>
     <ClCompile Include="Tests\FifoQueueTest.cpp">
       <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Example\SampleTest.cpp">
+      <Filter>Tests\Example</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Example\OrderTest.cpp">
+      <Filter>Tests\Example</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Example\ProductionQueueEntryTest.cpp">
+      <Filter>Tests\Example</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +126,15 @@
     </ClInclude>
     <ClInclude Include="Controller\InputReader.h">
       <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\Model\Sample.h">
+      <Filter>Example\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\Model\Order.h">
+      <Filter>Example\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\Model\ProductionQueueEntry.h">
+      <Filter>Example\Model</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

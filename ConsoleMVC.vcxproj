@@ -169,6 +169,9 @@
     <ClCompile Include="Tests\StatefulModelTest.cpp" />
     <ClCompile Include="Tests\QuantityGuardTest.cpp" />
     <ClCompile Include="Tests\FifoQueueTest.cpp" />
+    <ClCompile Include="Tests\Example\SampleTest.cpp" />
+    <ClCompile Include="Tests\Example\OrderTest.cpp" />
+    <ClCompile Include="Tests\Example\ProductionQueueEntryTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model\IEntity.h" />
@@ -190,6 +193,9 @@
     <ClInclude Include="Controller\MenuNode.h" />
     <ClInclude Include="Controller\NavigationLoop.h" />
     <ClInclude Include="Controller\InputReader.h" />
+    <ClInclude Include="Example\Model\Sample.h" />
+    <ClInclude Include="Example\Model\Order.h" />
+    <ClInclude Include="Example\Model\ProductionQueueEntry.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
