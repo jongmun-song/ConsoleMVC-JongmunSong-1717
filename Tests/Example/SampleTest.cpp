@@ -72,6 +72,141 @@ TEST(SampleTest, TryDecreaseStockBeyondCurrentStockFailsAndLeavesStockUnchanged)
     EXPECT_EQ(sample.GetStockQuantity(), 10);
 }
 
+// --- Reservation contract (docs/feature/model.md section 6.4, rule 4) ---
+// Available quantity = stock - reserved; TryReserve/TryReleaseReservation/
+// TryFulfillReservation are the only ways to move that reserved amount.
+
+TEST(SampleTest, GetAvailableQuantityIsStockMinusReserved)
+{
+    Sample sample(1, "Test Sample", 2.5, 0.9, 10);
+
+    EXPECT_EQ(sample.GetAvailableQuantity(), 10);
+
+    ASSERT_TRUE(sample.TryReserve(4));
+    EXPECT_EQ(sample.GetReservedQuantity(), 4);
+    EXPECT_EQ(sample.GetAvailableQuantity(), 6);
+}
+
+TEST(SampleTest, GetAvailableQuantityIsZeroWhenReservedEqualsStock)
+{
+    Sample sample(1, "Test Sample", 2.5, 0.9, 10);
+
+    ASSERT_TRUE(sample.TryReserve(10));
+
+    EXPECT_EQ(sample.GetAvailableQuantity(), 0);
+}
+
+TEST(SampleTest, TryReserveWithinAvailableQuantitySucceeds)
+{
+    Sample sample(1, "Test Sample", 2.5, 0.9, 10);
+
+    const bool result = sample.TryReserve(10);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(sample.GetReservedQuantity(), 10);
+    EXPECT_EQ(sample.GetStockQuantity(), 10);
+}
+
+TEST(SampleTest, TryReserveBeyondAvailableQuantityFailsAndLeavesReservedUnchanged)
+{
+    Sample sample(1, "Test Sample", 2.5, 0.9, 10);
+    ASSERT_TRUE(sample.TryReserve(3));
+
+    const bool result = sample.TryReserve(8); // available is only 7
+
+    EXPECT_FALSE(result);
+    EXPECT_EQ(sample.GetReservedQuantity(), 3);
+    EXPECT_EQ(sample.GetAvailableQuantity(), 7);
+}
+
+TEST(SampleTest, TryReserveNegativeAmountFails)
+{
+    Sample sample(1, "Test Sample", 2.5, 0.9, 10);
+
+    const bool result = sample.TryReserve(-1);
+
+    EXPECT_FALSE(result);
+    EXPECT_EQ(sample.GetReservedQuantity(), 0);
+}
+
+TEST(SampleTest, TryReleaseReservationDecreasesReserved)
+{
+    Sample sample(1, "Test Sample", 2.5, 0.9, 10);
+    ASSERT_TRUE(sample.TryReserve(6));
+
+    const bool result = sample.TryReleaseReservation(4);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(sample.GetReservedQuantity(), 2);
+    EXPECT_EQ(sample.GetStockQuantity(), 10); // actual stock is untouched
+    EXPECT_EQ(sample.GetAvailableQuantity(), 8);
+}
+
+TEST(SampleTest, TryReleaseReservationBeyondReservedFailsAndLeavesReservedUnchanged)
+{
+    Sample sample(1, "Test Sample", 2.5, 0.9, 10);
+    ASSERT_TRUE(sample.TryReserve(5));
+
+    const bool result = sample.TryReleaseReservation(6);
+
+    EXPECT_FALSE(result);
+    EXPECT_EQ(sample.GetReservedQuantity(), 5);
+}
+
+TEST(SampleTest, TryFulfillReservationDecreasesBothStockAndReserved)
+{
+    Sample sample(1, "Test Sample", 2.5, 0.9, 10);
+    ASSERT_TRUE(sample.TryReserve(7));
+
+    const bool result = sample.TryFulfillReservation(7);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(sample.GetReservedQuantity(), 0);
+    EXPECT_EQ(sample.GetStockQuantity(), 3);
+    EXPECT_EQ(sample.GetAvailableQuantity(), 3);
+}
+
+TEST(SampleTest, TryFulfillReservationBeyondReservedFailsAndLeavesBothUnchanged)
+{
+    Sample sample(1, "Test Sample", 2.5, 0.9, 10);
+    ASSERT_TRUE(sample.TryReserve(4));
+
+    const bool result = sample.TryFulfillReservation(5);
+
+    EXPECT_FALSE(result);
+    EXPECT_EQ(sample.GetReservedQuantity(), 4);
+    EXPECT_EQ(sample.GetStockQuantity(), 10);
+}
+
+TEST(SampleTest, TryFulfillReservationBeyondActualStockFailsAndRollsBackReservedDecrease)
+{
+    // Deliberately inconsistent state: reserved (8) ends up greater than
+    // actual stock (5) after a direct TryDecreaseStock call that does not
+    // know about reservations. TryFulfillReservation's defensive stock
+    // check must reject this and leave both fields exactly as they were.
+    Sample sample(1, "Test Sample", 2.5, 0.9, 10);
+    ASSERT_TRUE(sample.TryReserve(8));
+    ASSERT_TRUE(sample.TryDecreaseStock(5)); // stock: 10 -> 5, reserved stays 8
+
+    const bool result = sample.TryFulfillReservation(8);
+
+    EXPECT_FALSE(result);
+    EXPECT_EQ(sample.GetReservedQuantity(), 8);
+    EXPECT_EQ(sample.GetStockQuantity(), 5);
+}
+
+TEST(SampleTest, TryFulfillReservationNegativeAmountFails)
+{
+    Sample sample(1, "Test Sample", 2.5, 0.9, 10);
+    ASSERT_TRUE(sample.TryReserve(5));
+
+    const bool result = sample.TryFulfillReservation(-1);
+
+    EXPECT_FALSE(result);
+    EXPECT_EQ(sample.GetReservedQuantity(), 5);
+    EXPECT_EQ(sample.GetStockQuantity(), 10);
+}
+
 TEST(SampleTest, InMemoryModelAddGetByIdGetAllIntegration)
 {
     InMemoryModel<Sample> model;

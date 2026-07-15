@@ -48,6 +48,9 @@
     <Filter Include="Tests\Support">
       <UniqueIdentifier>{7a6c3f2c-1e63-4d34-9a3c-4f0b6a0b1a0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Example\Controller">
+      <UniqueIdentifier>{7a6c3f2c-1e63-4d34-9a3c-4f0b6a0b1a0b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -105,6 +108,15 @@
       <Filter>Tests\Example</Filter>
     </ClCompile>
     <ClCompile Include="Tests\Example\ProductionQueueEntryTest.cpp">
+      <Filter>Tests\Example</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Example\OrderApprovalServiceTest.cpp">
+      <Filter>Tests\Example</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Example\ProductionOrchestratorTest.cpp">
+      <Filter>Tests\Example</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Example\ExampleMenuTreeFactoryTest.cpp">
       <Filter>Tests\Example</Filter>
     </ClCompile>
     <ClCompile Include="Tests\Example\View\SampleListViewTest.cpp">
@@ -199,6 +211,15 @@
     <ClInclude Include="Example\Model\ProductionQueueEntry.h">
       <Filter>Example\Model</Filter>
     </ClInclude>
+    <ClInclude Include="Example\Model\ServiceOutcome.h">
+      <Filter>Example\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\Model\OrderApprovalService.h">
+      <Filter>Example\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\Model\ProductionOrchestrator.h">
+      <Filter>Example\Model</Filter>
+    </ClInclude>
     <ClInclude Include="Example\View\FormattingUtil.h">
       <Filter>Example\View</Filter>
     </ClInclude>
@@ -222,6 +243,30 @@
     </ClInclude>
     <ClInclude Include="Example\View\ShipmentView.h">
       <Filter>Example\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\Controller\ExampleAppContext.h">
+      <Filter>Example\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\Controller\ConsoleInputHelpers.h">
+      <Filter>Example\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\Controller\SampleMenuFactory.h">
+      <Filter>Example\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\Controller\OrderMenuFactory.h">
+      <Filter>Example\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\Controller\MonitoringMenuFactory.h">
+      <Filter>Example\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\Controller\ProductionMenuFactory.h">
+      <Filter>Example\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\Controller\ShipmentMenuFactory.h">
+      <Filter>Example\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\Controller\ExampleMenuTreeFactory.h">
+      <Filter>Example\Controller</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

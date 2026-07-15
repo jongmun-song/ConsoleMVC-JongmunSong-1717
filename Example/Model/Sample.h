@@ -11,6 +11,16 @@
 // This type is a verification example, not a reusable dependency -
 // SampleOrderSystem is free to define its own Sample type instead of
 // reusing this one (see ../../CLAUDE.md "의존 강제 없음").
+//
+// Reserved-quantity tracking (docs/feature/model.md section 6.4, rule 4):
+// approving an order does not immediately decrement stock. Instead, the
+// portion of stock already promised to some order is tracked separately in
+// m_reserved (another core QuantityGuard<int>, reused for the same
+// never-goes-negative invariant as m_stock). "Available quantity" - the
+// amount that can still be newly promised to an order - is always
+// GetStockQuantity() - GetReservedQuantity(); actual stock is only ever
+// decremented once a reservation is fulfilled (e.g. at shipment), via
+// TryFulfillReservation.
 
 #include "../../Model/IEntity.h"
 #include "../../Model/QuantityGuard.h"
@@ -79,11 +89,79 @@ namespace ConsoleMVC::Example::Model
             return m_stock.TryDecrease(amount);
         }
 
+        // Amount of stock already promised to some order but not yet
+        // shipped.
+        int GetReservedQuantity() const
+        {
+            return m_reserved.GetQuantity();
+        }
+
+        // Stock that can still be newly promised to an order: actual stock
+        // minus what is already reserved.
+        int GetAvailableQuantity() const
+        {
+            return GetStockQuantity() - GetReservedQuantity();
+        }
+
+        // Promises `amount` units of currently available stock to an order,
+        // without touching actual stock. Returns false (no state change) if
+        // amount is negative or exceeds GetAvailableQuantity() - a caller
+        // can never reserve more than is actually available right now (see
+        // docs/feature/model.md section 6.4, rule 5 - no reserving against
+        // stock that only exists in a future projection).
+        bool TryReserve(int amount)
+        {
+            if (amount < 0 || amount > GetAvailableQuantity())
+            {
+                return false;
+            }
+            return m_reserved.TryIncrease(amount);
+        }
+
+        // Cancels a previously made reservation without shipping it (e.g. a
+        // rolled-back approval), returning that stock to the available
+        // pool. Returns false (no state change) if amount is negative or
+        // exceeds the currently reserved quantity.
+        bool TryReleaseReservation(int amount)
+        {
+            return m_reserved.TryDecrease(amount);
+        }
+
+        // Fulfils `amount` units of an existing reservation: decreases both
+        // the reserved quantity and actual stock together (used when a
+        // reserved order finally ships - see Example/Model/OrderApprovalService.h
+        // Release()). Returns false (no state change) if amount is negative,
+        // exceeds the reserved quantity, or (defensively) exceeds actual
+        // stock.
+        bool TryFulfillReservation(int amount)
+        {
+            if (amount < 0 || amount > GetReservedQuantity() || amount > GetStockQuantity())
+            {
+                return false;
+            }
+
+            if (!m_reserved.TryDecrease(amount))
+            {
+                return false;
+            }
+
+            if (!m_stock.TryDecrease(amount))
+            {
+                // Roll back the reservation decrease so a failed fulfilment
+                // leaves state entirely unchanged.
+                m_reserved.TryIncrease(amount);
+                return false;
+            }
+
+            return true;
+        }
+
     private:
         int m_sampleId;
         std::string m_name;
         double m_averageProductionTimePerUnit;
         double m_yieldRatio;
         ConsoleMVC::Model::QuantityGuard<int> m_stock;
+        ConsoleMVC::Model::QuantityGuard<int> m_reserved;
     };
 }
