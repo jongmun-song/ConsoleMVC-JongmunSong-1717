@@ -169,6 +169,13 @@
     <ClCompile Include="Tests\StatefulModelTest.cpp" />
     <ClCompile Include="Tests\QuantityGuardTest.cpp" />
     <ClCompile Include="Tests\FifoQueueTest.cpp" />
+    <ClCompile Include="Tests\HeaderViewTest.cpp" />
+    <ClCompile Include="Tests\MenuViewTest.cpp" />
+    <ClCompile Include="Tests\TableViewTest.cpp" />
+    <ClCompile Include="Tests\BadgeViewTest.cpp" />
+    <ClCompile Include="Tests\ConfirmViewTest.cpp" />
+    <ClCompile Include="Tests\ProgressBarViewTest.cpp" />
+    <ClCompile Include="Tests\MessageViewTest.cpp" />
     <ClCompile Include="Tests\Example\SampleTest.cpp" />
     <ClCompile Include="Tests\Example\OrderTest.cpp" />
     <ClCompile Include="Tests\Example\ProductionQueueEntryTest.cpp" />

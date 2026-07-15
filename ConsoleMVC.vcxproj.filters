@@ -59,6 +59,27 @@
     <ClCompile Include="Tests\FifoQueueTest.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="Tests\HeaderViewTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\MenuViewTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\TableViewTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\BadgeViewTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\ConfirmViewTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\ProgressBarViewTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\MessageViewTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
     <ClCompile Include="Tests\Example\SampleTest.cpp">
       <Filter>Tests\Example</Filter>
     </ClCompile>
