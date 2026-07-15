@@ -39,6 +39,12 @@
     <Filter Include="Tests\Example">
       <UniqueIdentifier>{7a6c3f2c-1e63-4d34-9a3c-4f0b6a0b1a07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Example\View">
+      <UniqueIdentifier>{7a6c3f2c-1e63-4d34-9a3c-4f0b6a0b1a08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Example\View">
+      <UniqueIdentifier>{7a6c3f2c-1e63-4d34-9a3c-4f0b6a0b1a09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -88,6 +94,27 @@
     </ClCompile>
     <ClCompile Include="Tests\Example\ProductionQueueEntryTest.cpp">
       <Filter>Tests\Example</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Example\View\SampleListViewTest.cpp">
+      <Filter>Tests\Example\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Example\View\SampleRegistrationViewTest.cpp">
+      <Filter>Tests\Example\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Example\View\OrderIntakeViewTest.cpp">
+      <Filter>Tests\Example\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Example\View\OrderApprovalViewTest.cpp">
+      <Filter>Tests\Example\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Example\View\MonitoringViewTest.cpp">
+      <Filter>Tests\Example\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Example\View\ProductionLineViewTest.cpp">
+      <Filter>Tests\Example\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Example\View\ShipmentViewTest.cpp">
+      <Filter>Tests\Example\View</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +183,30 @@
     </ClInclude>
     <ClInclude Include="Example\Model\ProductionQueueEntry.h">
       <Filter>Example\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\View\FormattingUtil.h">
+      <Filter>Example\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\View\SampleListView.h">
+      <Filter>Example\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\View\SampleRegistrationView.h">
+      <Filter>Example\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\View\OrderIntakeView.h">
+      <Filter>Example\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\View\OrderApprovalView.h">
+      <Filter>Example\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\View\MonitoringView.h">
+      <Filter>Example\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\View\ProductionLineView.h">
+      <Filter>Example\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\View\ShipmentView.h">
+      <Filter>Example\View</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

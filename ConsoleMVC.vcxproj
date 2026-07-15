@@ -179,6 +179,13 @@
     <ClCompile Include="Tests\Example\SampleTest.cpp" />
     <ClCompile Include="Tests\Example\OrderTest.cpp" />
     <ClCompile Include="Tests\Example\ProductionQueueEntryTest.cpp" />
+    <ClCompile Include="Tests\Example\View\SampleListViewTest.cpp" />
+    <ClCompile Include="Tests\Example\View\SampleRegistrationViewTest.cpp" />
+    <ClCompile Include="Tests\Example\View\OrderIntakeViewTest.cpp" />
+    <ClCompile Include="Tests\Example\View\OrderApprovalViewTest.cpp" />
+    <ClCompile Include="Tests\Example\View\MonitoringViewTest.cpp" />
+    <ClCompile Include="Tests\Example\View\ProductionLineViewTest.cpp" />
+    <ClCompile Include="Tests\Example\View\ShipmentViewTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model\IEntity.h" />
@@ -203,6 +210,14 @@
     <ClInclude Include="Example\Model\Sample.h" />
     <ClInclude Include="Example\Model\Order.h" />
     <ClInclude Include="Example\Model\ProductionQueueEntry.h" />
+    <ClInclude Include="Example\View\FormattingUtil.h" />
+    <ClInclude Include="Example\View\SampleListView.h" />
+    <ClInclude Include="Example\View\SampleRegistrationView.h" />
+    <ClInclude Include="Example\View\OrderIntakeView.h" />
+    <ClInclude Include="Example\View\OrderApprovalView.h" />
+    <ClInclude Include="Example\View\MonitoringView.h" />
+    <ClInclude Include="Example\View\ProductionLineView.h" />
+    <ClInclude Include="Example\View\ShipmentView.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
