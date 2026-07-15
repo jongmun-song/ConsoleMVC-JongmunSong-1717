@@ -25,7 +25,9 @@ namespace ConsoleMVC::Model
         virtual std::vector<T> Load() const = 0;
 
         // Persists the given snapshot of entities, replacing whatever was
-        // previously saved.
+        // previously saved. A concrete adapter may instead define its own
+        // replace-vs-append semantics (e.g. an append-only journal) as long
+        // as Load() documents what it can restore from that choice.
         virtual void Save(const std::vector<T>& entities) = 0;
     };
 

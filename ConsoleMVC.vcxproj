@@ -180,11 +180,13 @@
     <ClCompile Include="Tests\MenuNodeTest.cpp" />
     <ClCompile Include="Tests\NavigationLoopTest.cpp" />
     <ClCompile Include="Tests\Example\SampleTest.cpp" />
+    <ClCompile Include="Tests\Example\AppendOnlyFilePersistenceAdapterTest.cpp" />
     <ClCompile Include="Tests\Example\OrderTest.cpp" />
     <ClCompile Include="Tests\Example\ProductionQueueEntryTest.cpp" />
     <ClCompile Include="Tests\Example\OrderApprovalServiceTest.cpp" />
     <ClCompile Include="Tests\Example\ProductionOrchestratorTest.cpp" />
     <ClCompile Include="Tests\Example\ExampleMenuTreeFactoryTest.cpp" />
+    <ClCompile Include="Tests\Example\ExampleAppContextObserverTest.cpp" />
     <ClCompile Include="Tests\Example\View\SampleListViewTest.cpp" />
     <ClCompile Include="Tests\Example\View\SampleRegistrationViewTest.cpp" />
     <ClCompile Include="Tests\Example\View\OrderIntakeViewTest.cpp" />
@@ -220,6 +222,8 @@
     <ClInclude Include="Example\Model\ServiceOutcome.h" />
     <ClInclude Include="Example\Model\OrderApprovalService.h" />
     <ClInclude Include="Example\Model\ProductionOrchestrator.h" />
+    <ClInclude Include="Example\Model\ChangeLogObserver.h" />
+    <ClInclude Include="Example\Model\AppendOnlyFilePersistenceAdapter.h" />
     <ClInclude Include="Example\View\FormattingUtil.h" />
     <ClInclude Include="Example\View\SampleListView.h" />
     <ClInclude Include="Example\View\SampleRegistrationView.h" />

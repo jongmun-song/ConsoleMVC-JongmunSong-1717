@@ -104,6 +104,9 @@
     <ClCompile Include="Tests\Example\SampleTest.cpp">
       <Filter>Tests\Example</Filter>
     </ClCompile>
+    <ClCompile Include="Tests\Example\AppendOnlyFilePersistenceAdapterTest.cpp">
+      <Filter>Tests\Example</Filter>
+    </ClCompile>
     <ClCompile Include="Tests\Example\OrderTest.cpp">
       <Filter>Tests\Example</Filter>
     </ClCompile>
@@ -117,6 +120,9 @@
       <Filter>Tests\Example</Filter>
     </ClCompile>
     <ClCompile Include="Tests\Example\ExampleMenuTreeFactoryTest.cpp">
+      <Filter>Tests\Example</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Example\ExampleAppContextObserverTest.cpp">
       <Filter>Tests\Example</Filter>
     </ClCompile>
     <ClCompile Include="Tests\Example\View\SampleListViewTest.cpp">
@@ -218,6 +224,12 @@
       <Filter>Example\Model</Filter>
     </ClInclude>
     <ClInclude Include="Example\Model\ProductionOrchestrator.h">
+      <Filter>Example\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\Model\ChangeLogObserver.h">
+      <Filter>Example\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Example\Model\AppendOnlyFilePersistenceAdapter.h">
       <Filter>Example\Model</Filter>
     </ClInclude>
     <ClInclude Include="Example\View\FormattingUtil.h">
