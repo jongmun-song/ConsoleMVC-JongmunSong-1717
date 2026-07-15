@@ -176,6 +176,9 @@
     <ClCompile Include="Tests\ConfirmViewTest.cpp" />
     <ClCompile Include="Tests\ProgressBarViewTest.cpp" />
     <ClCompile Include="Tests\MessageViewTest.cpp" />
+    <ClCompile Include="Tests\InputReaderTest.cpp" />
+    <ClCompile Include="Tests\MenuNodeTest.cpp" />
+    <ClCompile Include="Tests\NavigationLoopTest.cpp" />
     <ClCompile Include="Tests\Example\SampleTest.cpp" />
     <ClCompile Include="Tests\Example\OrderTest.cpp" />
     <ClCompile Include="Tests\Example\ProductionQueueEntryTest.cpp" />
@@ -207,6 +210,7 @@
     <ClInclude Include="Controller\MenuNode.h" />
     <ClInclude Include="Controller\NavigationLoop.h" />
     <ClInclude Include="Controller\InputReader.h" />
+    <ClInclude Include="Tests\Support\ConsoleRedirect.h" />
     <ClInclude Include="Example\Model\Sample.h" />
     <ClInclude Include="Example\Model\Order.h" />
     <ClInclude Include="Example\Model\ProductionQueueEntry.h" />

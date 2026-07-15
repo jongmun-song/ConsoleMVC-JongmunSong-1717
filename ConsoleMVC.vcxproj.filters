@@ -45,6 +45,9 @@
     <Filter Include="Tests\Example\View">
       <UniqueIdentifier>{7a6c3f2c-1e63-4d34-9a3c-4f0b6a0b1a09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Support">
+      <UniqueIdentifier>{7a6c3f2c-1e63-4d34-9a3c-4f0b6a0b1a0a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -84,6 +87,15 @@
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="Tests\MessageViewTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\InputReaderTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\MenuNodeTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\NavigationLoopTest.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="Tests\Example\SampleTest.cpp">
@@ -174,6 +186,9 @@
     </ClInclude>
     <ClInclude Include="Controller\InputReader.h">
       <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Tests\Support\ConsoleRedirect.h">
+      <Filter>Tests\Support</Filter>
     </ClInclude>
     <ClInclude Include="Example\Model\Sample.h">
       <Filter>Example\Model</Filter>
