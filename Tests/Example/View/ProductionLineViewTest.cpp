@@ -4,9 +4,10 @@
 // docs/design/phase2.md item 8 test point: the example screens render the
 // expected output for Example/Model data.
 //
-// ProductionState only distinguishes PRODUCING/CONFIRMED, so progress is
-// rendered as binary 0%/100% (see ProductionLineView::ProgressRatio and
-// Tests/ProgressBarViewTest.cpp for the exact bar text each ratio produces).
+// ProductionState's three sequential steps (WAITING/PRODUCING/CONFIRMED)
+// are rendered as 0%/50%/100% progress respectively (see
+// ProductionLineView::ProgressRatio and Tests/ProgressBarViewTest.cpp for
+// the exact bar text each ratio produces).
 
 #include <gtest/gtest.h>
 
@@ -19,21 +20,36 @@ namespace
     using ConsoleMVC::Example::View::ProductionLineView;
 }
 
-TEST(ProductionLineViewTest, ProducingEntryRendersZeroPercentProgressAndWarningBadge)
+TEST(ProductionLineViewTest, WaitingEntryRendersZeroPercentProgressAndNormalBadge)
 {
     ProductionQueueEntry entry(1, 100, 50, 100, 0.9, 2.0);
-    ASSERT_EQ(entry.GetState(), ProductionState::PRODUCING);
+    ASSERT_EQ(entry.GetState(), ProductionState::WAITING);
 
     const std::string result = ProductionLineView::Render({ entry });
 
     EXPECT_NE(result.find("] 0%"), std::string::npos);
+    EXPECT_NE(result.find("[WAITING]"), std::string::npos);
+    EXPECT_EQ(result.find("] 50%"), std::string::npos);
+    EXPECT_EQ(result.find("] 100%"), std::string::npos);
+}
+
+TEST(ProductionLineViewTest, ProducingEntryRendersFiftyPercentProgressAndWarningBadge)
+{
+    ProductionQueueEntry entry(1, 100, 50, 100, 0.9, 2.0);
+    ASSERT_TRUE(entry.TryTransitionTo(ProductionState::PRODUCING));
+
+    const std::string result = ProductionLineView::Render({ entry });
+
+    EXPECT_NE(result.find("] 50%"), std::string::npos);
     EXPECT_NE(result.find("[! PRODUCING]"), std::string::npos);
+    EXPECT_EQ(result.find("] 0%"), std::string::npos);
     EXPECT_EQ(result.find("] 100%"), std::string::npos);
 }
 
 TEST(ProductionLineViewTest, ConfirmedEntryRendersHundredPercentProgressAndNormalBadge)
 {
     ProductionQueueEntry entry(1, 100, 50, 100, 0.9, 2.0);
+    ASSERT_TRUE(entry.TryTransitionTo(ProductionState::PRODUCING));
     ASSERT_TRUE(entry.TryTransitionTo(ProductionState::CONFIRMED));
 
     const std::string result = ProductionLineView::Render({ entry });
@@ -57,7 +73,9 @@ TEST(ProductionLineViewTest, RenderContainsQueueEntryFields)
 TEST(ProductionLineViewTest, RenderContainsMultipleEntriesInOrder)
 {
     ProductionQueueEntry producing(1, 100, 10, 20, 0.8, 1.0);
+    ASSERT_TRUE(producing.TryTransitionTo(ProductionState::PRODUCING));
     ProductionQueueEntry confirmed(2, 100, 15, 30, 0.8, 1.0);
+    ASSERT_TRUE(confirmed.TryTransitionTo(ProductionState::PRODUCING));
     ASSERT_TRUE(confirmed.TryTransitionTo(ProductionState::CONFIRMED));
 
     const std::string result = ProductionLineView::Render({ producing, confirmed });

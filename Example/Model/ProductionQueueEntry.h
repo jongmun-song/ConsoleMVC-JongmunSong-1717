@@ -47,12 +47,18 @@ namespace ConsoleMVC::Example::Model
         return averageProductionTimePerUnit * static_cast<double>(actualProductionQuantity);
     }
 
-    // Production progress for a single queued entry. PRODUCING is the entry
-    // state while it waits/executes in the queue; CONFIRMED marks that
-    // production has completed and the covering order can proceed (see
+    // Production progress for a single queued entry, strictly sequential
+    // (no skipping a step):
+    //   WAITING -> PRODUCING -> CONFIRMED
+    // WAITING is the entry's state immediately after being enqueued, while
+    // it waits its turn in the FIFO production queue (see
+    // requirements.pdf Chapter 2 "대기 주문 확인"); PRODUCING marks that
+    // production is actively underway; CONFIRMED marks that production has
+    // completed and the covering order can proceed (see
     // Order::TryTransitionTo(OrderState::CONFIRMED)).
     enum class ProductionState
     {
+        WAITING,
         PRODUCING,
         CONFIRMED
     };
@@ -80,7 +86,7 @@ namespace ConsoleMVC::Example::Model
             , m_totalProductionTime(
                   CalculateTotalProductionTime(
                       sampleAverageProductionTimePerUnit, m_actualProductionQuantity))
-            , m_state(ProductionState::PRODUCING, &ProductionQueueEntry::IsTransitionAllowed)
+            , m_state(ProductionState::WAITING, &ProductionQueueEntry::IsTransitionAllowed)
         {
         }
 
@@ -121,8 +127,10 @@ namespace ConsoleMVC::Example::Model
             return m_state.GetState();
         }
 
-        // Marks production as complete. Returns false (state unchanged) if
-        // called on an entry that is not currently PRODUCING.
+        // Advances the entry to the next step in the sequential state graph
+        // (WAITING -> PRODUCING -> CONFIRMED). Returns false (state
+        // unchanged) if called with anything other than the single allowed
+        // next state for the current state.
         bool TryTransitionTo(ProductionState nextState)
         {
             return m_state.TryTransition(nextState);
@@ -131,7 +139,16 @@ namespace ConsoleMVC::Example::Model
     private:
         static bool IsTransitionAllowed(const ProductionState& current, const ProductionState& next)
         {
-            return current == ProductionState::PRODUCING && next == ProductionState::CONFIRMED;
+            switch (current)
+            {
+            case ProductionState::WAITING:
+                return next == ProductionState::PRODUCING;
+            case ProductionState::PRODUCING:
+                return next == ProductionState::CONFIRMED;
+            case ProductionState::CONFIRMED:
+                return false;
+            }
+            return false;
         }
 
         int m_orderId;

@@ -3,9 +3,9 @@
 //
 // docs/feature/model.md section 6.3 - production entries are computed via
 // free functions (CalculateActualProductionQuantity /
-// CalculateTotalProductionTime), track their own PRODUCING->CONFIRMED
-// StatefulModel<ProductionState>, and are processed in FIFO order via the
-// core ConsoleMVC::Model::FifoQueue<T>.
+// CalculateTotalProductionTime), track their own
+// WAITING->PRODUCING->CONFIRMED StatefulModel<ProductionState>, and are
+// processed in FIFO order via the core ConsoleMVC::Model::FifoQueue<T>.
 
 #include <gtest/gtest.h>
 
@@ -90,16 +90,37 @@ TEST(ProductionQueueEntryTest, ConstructorDerivesActualQuantityAndTotalTime)
     EXPECT_DOUBLE_EQ(entry.GetTotalProductionTime(), 224.0);
 }
 
-TEST(ProductionQueueEntryTest, NewEntryStartsInProducingState)
+TEST(ProductionQueueEntryTest, NewEntryStartsInWaitingState)
 {
     ProductionQueueEntry entry(1, 100, 50, 100, 0.9, 2.0);
 
+    EXPECT_EQ(entry.GetState(), ProductionState::WAITING);
+}
+
+TEST(ProductionQueueEntryTest, WaitingToProducingTransitionSucceeds)
+{
+    ProductionQueueEntry entry(1, 100, 50, 100, 0.9, 2.0);
+
+    const bool result = entry.TryTransitionTo(ProductionState::PRODUCING);
+
+    EXPECT_TRUE(result);
     EXPECT_EQ(entry.GetState(), ProductionState::PRODUCING);
+}
+
+TEST(ProductionQueueEntryTest, WaitingCannotSkipDirectlyToConfirmed)
+{
+    ProductionQueueEntry entry(1, 100, 50, 100, 0.9, 2.0);
+
+    const bool result = entry.TryTransitionTo(ProductionState::CONFIRMED);
+
+    EXPECT_FALSE(result);
+    EXPECT_EQ(entry.GetState(), ProductionState::WAITING);
 }
 
 TEST(ProductionQueueEntryTest, ProducingToConfirmedTransitionSucceeds)
 {
     ProductionQueueEntry entry(1, 100, 50, 100, 0.9, 2.0);
+    ASSERT_TRUE(entry.TryTransitionTo(ProductionState::PRODUCING));
 
     const bool result = entry.TryTransitionTo(ProductionState::CONFIRMED);
 
@@ -110,6 +131,7 @@ TEST(ProductionQueueEntryTest, ProducingToConfirmedTransitionSucceeds)
 TEST(ProductionQueueEntryTest, ConfirmedIsTerminalAndRejectsFurtherTransition)
 {
     ProductionQueueEntry entry(1, 100, 50, 100, 0.9, 2.0);
+    ASSERT_TRUE(entry.TryTransitionTo(ProductionState::PRODUCING));
     ASSERT_TRUE(entry.TryTransitionTo(ProductionState::CONFIRMED));
 
     const bool result = entry.TryTransitionTo(ProductionState::PRODUCING);

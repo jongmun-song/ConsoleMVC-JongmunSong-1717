@@ -5,10 +5,18 @@
 //
 // ProductionLineView adapts Example::Model::ProductionQueueEntry into a
 // TableView list where each row is badged (BadgeView) with its production
-// status and shown alongside a ProgressBarView gauge. ProductionState only
-// distinguishes PRODUCING/CONFIRMED (no partial-completion tracking), so
-// progress is rendered as binary 0%/100% - this simplification is this
-// adapter's own design decision, not a core View concept.
+// status and shown alongside a ProgressBarView gauge. ProductionState's
+// three sequential steps (WAITING -> PRODUCING -> CONFIRMED) are mapped to
+// progress/badge explicitly via a switch (no default case), so a compiler
+// warning (-Wswitch) flags any future ProductionState addition that this
+// adapter forgets to handle:
+//   WAITING   -> 0%   progress, Normal badge  (not yet started - nothing to
+//                warn about)
+//   PRODUCING -> 50%  progress, Warning badge (actively running - draws
+//                attention while incomplete)
+//   CONFIRMED -> 100% progress, Normal badge  (finished successfully)
+// This progress/badge mapping is this adapter's own design decision, not a
+// core View concept.
 
 #include "../Model/ProductionQueueEntry.h"
 #include "FormattingUtil.h"
@@ -18,6 +26,7 @@
 
 #include <cstddef>
 #include <iostream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -49,14 +58,30 @@ namespace ConsoleMVC::Example::View
     private:
         static double ProgressRatio(Model::ProductionState state)
         {
-            return state == Model::ProductionState::CONFIRMED ? 1.0 : 0.0;
+            switch (state)
+            {
+            case Model::ProductionState::WAITING:
+                return 0.0;
+            case Model::ProductionState::PRODUCING:
+                return 0.5;
+            case Model::ProductionState::CONFIRMED:
+                return 1.0;
+            }
+            throw std::logic_error("ProductionLineView::ProgressRatio: unhandled ProductionState");
         }
 
         static std::string StatusBadge(Model::ProductionState state)
         {
-            return state == Model::ProductionState::CONFIRMED
-                ? ConsoleMVC::View::BadgeView::Render("CONFIRMED", ConsoleMVC::View::BadgeStyle::Normal)
-                : ConsoleMVC::View::BadgeView::Render("PRODUCING", ConsoleMVC::View::BadgeStyle::Warning);
+            switch (state)
+            {
+            case Model::ProductionState::WAITING:
+                return ConsoleMVC::View::BadgeView::Render("WAITING", ConsoleMVC::View::BadgeStyle::Normal);
+            case Model::ProductionState::PRODUCING:
+                return ConsoleMVC::View::BadgeView::Render("PRODUCING", ConsoleMVC::View::BadgeStyle::Warning);
+            case Model::ProductionState::CONFIRMED:
+                return ConsoleMVC::View::BadgeView::Render("CONFIRMED", ConsoleMVC::View::BadgeStyle::Normal);
+            }
+            throw std::logic_error("ProductionLineView::StatusBadge: unhandled ProductionState");
         }
 
         static std::vector<std::vector<std::string>> ToRows(
